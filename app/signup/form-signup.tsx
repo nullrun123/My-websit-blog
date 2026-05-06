@@ -24,11 +24,14 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
 import * as z from "zod"
-import { signIn } from "@/lib/auth-client"
+import { sendVerificationEmail, signIn, signUp } from "@/lib/auth-client"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 const formSchema = z.object({
+    name: z
+        .string()
+        .min(1,{message: "name must be at least 1 characters long"}),
   email: z
     .string()
     .min(1, { message: "This field has to be filled." })
@@ -40,37 +43,56 @@ const formSchema = z.object({
     .refine((val) => /[A-Z]/.test(val), { message: "Password must contain at least one uppercase letter" })
     .refine((val) => /[a-z]/.test(val), { message: "Password must contain at least one lowercase letter" })
     .refine((val) => /[0-9]/.test(val), { message: "Password must contain at least one number" })
-    .refine((val) => /[!@#$%^&*]/.test(val), { message: "Password must contain at least one special character" })
+    .refine((val) => /[!@#$%^&*]/.test(val), { message: "Password must contain at least one special character" }),
+    passwordConfirmation: z
+                        .string()
+                        .min(1,'Please Confirm your password'),  
+})  .refine((data)=> data.password === data.passwordConfirmation,{
+    message:"Password is not match",
+    path:["passwordConfirmation"],
 })
 
-export function FormSignIn() {
+export function FormSignUp() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>('');
+  const [verified, setVerified] = useState<string | null>('');
   const router= useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+        name:"",
+        email: "",
+        password: "",
+        passwordConfirmation: ""
     },
   })
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setError(null);
+    setVerified(null);
     setIsLoading(true);
-    const { email, password } = data;
+    const { email, password , name } = data;
 
-    const { error } = await signIn.email({
-      email,
-      password,
+    const { error } = await signUp.email({
+        name,
+        email,
+        password,
+        
     })
+
+
 
     setIsLoading(false);
     if(error){
         setError(error.message || 'Something is wrong')
         return;
     }else{
-      router.push('/blog')
+        await sendVerificationEmail({
+            email,
+            callbackURL:'/email-verified'
+     })
+      setVerified('go to verified your email');  
     } 
 
     
@@ -79,9 +101,9 @@ export function FormSignIn() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Login to your account</CardTitle>
+        <CardTitle>Register to your account</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Enter to your account
         </CardDescription>
         <CardAction>
           <Button variant="link">
@@ -91,8 +113,30 @@ export function FormSignIn() {
       </CardHeader>
       <CardContent>
      <form onSubmit={form.handleSubmit(onSubmit)}>
-  <FieldSet className="w-full max-w-xs p-2">
-      <FieldGroup className="space-y-3"> 
+  <FieldSet className="w-full px-1">
+      <FieldGroup className="w-full"> 
+         <Controller
+              name="name"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-email">
+                    Username
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    id="form-email"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="John Don"
+                    autoComplete="off"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
      <Controller
               name="email"
               control={form.control}
@@ -105,7 +149,7 @@ export function FormSignIn() {
                     {...field}
                     id="form-email"
                     aria-invalid={fieldState.invalid}
-                    placeholder="Login button not working on mobile"
+                    placeholder="john@gmail.com"
                     autoComplete="off"
                   />
                   {fieldState.invalid && (
@@ -128,7 +172,7 @@ export function FormSignIn() {
                     {...field}
                     id="form-password"
                     aria-invalid={fieldState.invalid}
-                    placeholder="Login button not working on mobile"
+                    placeholder="*****"
                     autoComplete="off"
                   />
                   {fieldState.invalid && (
@@ -139,8 +183,38 @@ export function FormSignIn() {
               )}
             />
 
+            <Controller
+              name="passwordConfirmation"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-passwordConfirmation">
+                    Confirm Password
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    id="form-passwordConfirmation"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="password confirm"
+                    autoComplete="off"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+              {
+              verified && (
+                 <div role="alert" className="text-sm text-green-600">
+                {verified}
+              </div>
+              )
+            }
+
             {
-              error ?? (
+              error && (
                  <div role="alert" className="text-sm text-red-600">
                 {error}
               </div>
@@ -148,7 +222,7 @@ export function FormSignIn() {
             }
        
 
-       <div className="flex-col space-y-2"> 
+       <div className=" mt-2 flex-col space-y-2"> 
          <Button type="submit" className="bg-white text-black cursor-pointer w-full" aria-label="Submit" variant="default">Sign In</Button>
         <Button variant="outline" className="w-full" disabled={isLoading}>
           Login with Google
