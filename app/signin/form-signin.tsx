@@ -70,7 +70,7 @@ export function FormSignIn() {
         setError(error.message || 'Something is wrong')
         return;
     }else{
-      router.push('/blog')
+      router.push('/')
     } 
 
     

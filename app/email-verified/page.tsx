@@ -24,7 +24,7 @@ async function EmailVerified() {
 //   console.log(user)
   
   return (
-    <div className='w-full h-full flex justify-center items-center'>
+    <div className='w-full h-screen flex justify-center items-center'>
         <Card size="sm" className="mx-auto w-full max-w-sm">
       <CardHeader>
         <CardTitle className='text-green-500'>Email verified Completed!</CardTitle>
