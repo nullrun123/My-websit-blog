@@ -1,3 +1,5 @@
+
+
 // store.ts
 import { TypeBlog } from '@/types/tblog'
 import { create } from 'zustand'
@@ -49,7 +51,7 @@ export const useBlogStore = create<BlogState>((set,get) => ({
             if(result.success){
                 set({blogs:result.data,isLoading:false})
             }else{
-                set({blogs:result.error,isLoading:false})
+                set({ error: result.error, isLoading: false })
             }
 
             
@@ -66,7 +68,10 @@ export const useBlogStore = create<BlogState>((set,get) => ({
 
     addBlog: async({title,text}:blogProps)=>{
         set({isLoading:true,error:null});
+
         try{
+
+            
             const newdata = {
                 title,
                 text

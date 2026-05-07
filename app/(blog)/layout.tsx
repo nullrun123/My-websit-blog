@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import Navbar from "@/components/Navbar";
 import { getServerSession } from "@/lib/get-session";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -29,17 +31,20 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-    const session = await getServerSession();
-    const user = session?.user;
+      const session = await auth.api.getSession({
+        headers: await headers()
+    });
+
+    
+
   return (
-    <html
-      lang="en"
-      className={cn("dark","h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
-    >
-      <body className="min-h-full flex flex-col font-intel">
-        <Navbar/>
+    <main>
+      <div className="min-h-full flex flex-col font-intel">
+        <Navbar />
         {children} 
-        <Toaster richColors /></body>
-    </html>
+        <Toaster richColors />
+      </div>
+    </main>
+
   );
 }

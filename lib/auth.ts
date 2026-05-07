@@ -21,6 +21,7 @@ export const auth = betterAuth({
                 html:`<p>Click <a href='${url}'>here</a> to verify your email.</p>`
             })
         },
+        callbackURL: "/email-verified",
 		expiresIn: 3600 // 1 hour
 	},
 });
