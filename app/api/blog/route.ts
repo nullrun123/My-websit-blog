@@ -35,8 +35,9 @@ export async function POST(resquet:NextRequest){
     try{
         const blog = await resquet.json();
         const { title,text} = blog;
+        
 
-        if(!title || title.trim === "" || !text || text.trim() === ""){
+        if(!title || title.trim() === "" || !text || text.trim() === ""){
             return NextResponse.json({
                 success:false,
                 error:"Failed to create blog",

@@ -26,6 +26,7 @@ model User {
 
   @@unique([email])
   @@map("user")
+  blogs Blog[]
 }
 
 model Session {
@@ -80,6 +81,11 @@ model Blog{
   id String @id @default(uuid())
   title String
   text String
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
+  @@index([userId]) 
 }

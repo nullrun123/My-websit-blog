@@ -9,7 +9,7 @@ interface blogProps{
 // Define types for state & actions
 interface BlogState {
 
-  blog: TypeBlog[]
+  blogs: TypeBlog[]
   isLoading: boolean
   error:string | null
 
@@ -28,9 +28,9 @@ interface BlogState {
 }
 
 // Create store using the curried form of `create`
-export const useBearStore = create<BlogState>((set,get) => ({
+export const useBlogStore = create<BlogState>((set,get) => ({
     
-    blog:[],
+    blogs:[],
     isLoading:false,
     error:null,
 
@@ -47,9 +47,9 @@ export const useBearStore = create<BlogState>((set,get) => ({
 
 
             if(result.success){
-                set({blog:result.data,isLoading:false})
+                set({blogs:result.data,isLoading:false})
             }else{
-                set({blog:result.error,isLoading:false})
+                set({blogs:result.error,isLoading:false})
             }
 
             
@@ -71,20 +71,22 @@ export const useBearStore = create<BlogState>((set,get) => ({
                 title,
                 text
             }
+
             const res = await fetch('/api/blog',{
                 method:"POST",
                  headers: { 'Content-Type': 'application/json' }, 
-                 body:JSON.stringify({newdata})
+                 body:JSON.stringify(newdata)
             })
 
             const result = await res.json()
 
             if(result.success){
-                set({blog:result.data,isLoading:false})
+                set((state) => ({
+                blogs: [...state.blogs, result.data],
+                isLoading: false
+                }))
             }else{
-                set({
-                    blog:result.error,isLoading:false
-                })
+               set({error: result.error, isLoading:false})
             }
 
         }catch(error){
@@ -98,10 +100,10 @@ export const useBearStore = create<BlogState>((set,get) => ({
     deleteBlog: async(id:string)=>{
         set({isLoading:true,error:null});
 
-        const originalBlog  = get().blog;
+        const originalBlog  = get().blogs;
 
         set((state)=>({
-            blog: state.blog.filter(s => s.id !== id)
+            blogs: state.blogs.filter(s => s.id !== id)
         }))
 
         try{
@@ -116,7 +118,7 @@ export const useBearStore = create<BlogState>((set,get) => ({
                 })
             }else{
                 set({
-                    blog:originalBlog,isLoading:false,error:result.error
+                    blogs:originalBlog,isLoading:false,error:result.error
                 })
             }
 
@@ -133,10 +135,10 @@ export const useBearStore = create<BlogState>((set,get) => ({
     updateBlog: async(id:string,data: {title?:string,text?:string})=>{
          set({isLoading:true,error:null});
 
-         const originalBlog = get().blog;
+         const originalBlog = get().blogs;
 
          set((state)=>({
-            blog: state.blog.map(blog => blog.id === id ? {...blog,...data} : blog)
+            blogs: state.blogs.map(blog => blog.id === id ? {...blog,...data} : blog)
          }))
 
         
@@ -144,19 +146,19 @@ export const useBearStore = create<BlogState>((set,get) => ({
             const res = await fetch(`/api/blog/${id}`,{
                 method:"PUT",
                 headers: { 'Content-Type': 'application/json' }, 
-                 body:JSON.stringify({data})
+                 body:JSON.stringify(data)
             })
             const result = await res.json();
 
             if(result.success){
                 const newdata = result.data
                 set((state)=>({
-                    blog: state.blog.map(b=>b.id === id ? newdata : b),isLoading:false
+                    blogs: state.blogs.map(b=>b.id === id ? newdata : b),isLoading:false
                 }))
 
             }else{
                   set({
-                    blog: originalBlog,isLoading:false,error:result.error
+                    blogs: originalBlog,isLoading:false,error:result.error
             })
             }
         }catch(error){
@@ -168,7 +170,7 @@ export const useBearStore = create<BlogState>((set,get) => ({
     },
 
     getBlogstats:()=>{
-        const data = get().blog;
+        const data = get().blogs;
 
         return {
             total: data.length,

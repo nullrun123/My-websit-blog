@@ -20,7 +20,7 @@ function Navbar({ user }:any) {
   
   return (
     <>
-    <div className='bg-secondary sticky top-0 z-[20] mx-auto flex flex-wrap w-full items-center justify-between border-b border-gray-500 p-8'>
+    <div className='bg-secondary sticky top-0 z-[20] mx-auto flex flex-wrap w-full items-center justify-between border-b border-gray-500 p-1.5'>
         <div className='h-16 w-16'>ww</div>
             <div className='w-1/3 justify-end items-center hidden md:flex '>
             {

@@ -44,7 +44,7 @@ export async function PUT(resquet:NextRequest,props:{params:PropsId}){
 
         const { text , title } = body;
 
-        if(!title || title.trim === "" || !text || text.trim() === ""){
+        if(!title || title.trim() === "" || !text || text.trim() === ""){
             return NextResponse.json({
                 success:false,
                 error:"Failed to update blog",
