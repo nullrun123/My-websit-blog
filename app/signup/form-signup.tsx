@@ -107,7 +107,7 @@ export function FormSignUp() {
         </CardDescription>
         <CardAction>
           <Button variant="link">
-            <Link href={'/signup '}>Sign Up</Link>
+            <Link href={'/signin '}>Sign In</Link>
           </Button>
         </CardAction>
       </CardHeader>

@@ -1,12 +1,39 @@
 import prisma from "@/lib/prisma";
 import { Param } from "@prisma/client/runtime/client";
 import { NextRequest, NextResponse } from "next/server";
-import { success } from "zod";
+
 
 
 interface PropsId {
     id:string
 }
+
+export async function GET(resquet:NextRequest,props:{params:PropsId}){
+    
+    try{
+        const params = await props.params;
+        const id = params.id;
+
+        const data = await prisma.blog.findFirst({
+            where:{
+                id
+            },
+        })
+        
+        return NextResponse.json({
+            success:true,
+            data:data
+        })
+    }catch(error){
+        console.error("Error GET from id : ",error);
+        return NextResponse.json({
+            success:false,
+            error:"Failed to find blog",
+            status:500
+        })
+    }
+}
+
 
 
 export async function DELETE(resquet:NextRequest,props:{params:PropsId}){

@@ -10,10 +10,16 @@ export const auth = betterAuth({
     emailAndPassword: { 
         enabled: true, 
         requireEmailVerification: true,
-  }, 
+    }, 
+    socialProviders: {
+        google: { 
+            clientId: process.env.GOOGLE_CLIENT_ID as string, 
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, 
+        }, 
+    },
     emailVerification: {
-        sendOnSignUp:true,
-        autoSignInAfterVerification:true,
+        // sendOnSignUp:true,
+        // autoSignInAfterVerification:true,
 		 sendVerificationEmail: async ({ user, url, token }, request) => {
             void sendEmail({
                 to:user.email,
@@ -24,4 +30,15 @@ export const auth = betterAuth({
         callbackURL: "/email-verified",
 		expiresIn: 3600 // 1 hour
 	},
+    user:{
+        additionalFields:{
+            role:{
+                type:"string",
+                input:false,
+            }
+        }
+    }
 });
+
+export type Session = typeof auth.$Infer.Session;
+export type User = typeof auth.$Infer.Session.user;

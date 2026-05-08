@@ -72,16 +72,31 @@ export function FormSignIn() {
     }else{
       router.push('/')
     } 
-
-    
   }
+
+  async function handleOauth(){
+    setError(null);
+    setIsLoading(true);
+    const { error } = await signIn.social({
+      provider:"google",
+      callbackURL:'/blog',
+    })
+
+    setIsLoading(false);
+    if(error){
+      setError(error.message || 'Something is wrong')
+        return;
+    }
+
+  }
+
 
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Login to your account</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Enter your email to login to your account
         </CardDescription>
         <CardAction>
           <Button variant="link">
@@ -90,9 +105,9 @@ export function FormSignIn() {
         </CardAction>
       </CardHeader>
       <CardContent>
-     <form onSubmit={form.handleSubmit(onSubmit)}>
-  <FieldSet className="w-full max-w-xs p-2">
-      <FieldGroup className="space-y-3"> 
+     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex-center">
+  <FieldSet className="w-full max-w-xs">
+      <FieldGroup className="space-y-4"> 
      <Controller
               name="email"
               control={form.control}
@@ -105,7 +120,7 @@ export function FormSignIn() {
                     {...field}
                     id="form-email"
                     aria-invalid={fieldState.invalid}
-                    placeholder="Login button not working on mobile"
+                    placeholder=""
                     autoComplete="off"
                   />
                   {fieldState.invalid && (
@@ -128,7 +143,7 @@ export function FormSignIn() {
                     {...field}
                     id="form-password"
                     aria-invalid={fieldState.invalid}
-                    placeholder="Login button not working on mobile"
+                    placeholder=""
                     autoComplete="off"
                   />
                   {fieldState.invalid && (
@@ -148,9 +163,9 @@ export function FormSignIn() {
             }
        
 
-       <div className="flex-col space-y-2"> 
-         <Button type="submit" className="bg-white text-black cursor-pointer w-full" aria-label="Submit" variant="default">Sign In</Button>
-        <Button variant="outline" className="w-full" disabled={isLoading}>
+       <div className="flex-col space-y-3"> 
+         <Button disabled={isLoading} type="submit" className="bg-white text-black cursor-pointer w-full" aria-label="Submit" variant="default">Sign In</Button>
+        <Button variant="outline" className="w-full" disabled={isLoading} onClick={handleOauth}>
           Login with Google
         </Button>
         </div>       

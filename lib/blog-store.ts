@@ -16,6 +16,7 @@ interface BlogState {
   error:string | null
 
     fetchBlog: ()=>Promise<void>
+    getBlog:(id:string) => Promise<void>
     addBlog: ({title,text}:blogProps) => void
     deleteBlog:(id:string) => Promise<void>
     updateBlog: (id:string,data: {title?:string,text?:string}) => Promise<void>
@@ -26,6 +27,7 @@ interface BlogState {
 
     getBlogstats:()=>void
 
+    
 
 }
 
@@ -64,6 +66,30 @@ export const useBlogStore = create<BlogState>((set,get) => ({
         
 
         
+    },
+    getBlog: async(id:string)=>{
+          set({isLoading:true,error:null});
+          try{
+            const res = await fetch(`/api/blog/${id}`,{
+               method:"GET"
+            })
+
+            const result = await res.json();
+
+              if(result.success){
+                set({isLoading:false})
+                return result.data;
+            }else{
+                set({ error: result.error, isLoading: false })
+                 return null; 
+            }
+          }catch(error){
+             set({
+                error:"Failed to fetch blog",isLoading:false
+            })
+            console.error("error to fetch blog",error)
+             return null; 
+          }
     },
 
     addBlog: async({title,text}:blogProps)=>{

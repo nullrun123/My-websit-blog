@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import { getServerSession } from "@/lib/get-session";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import { redirect, unauthorized } from "next/navigation";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -31,20 +32,23 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-      const session = await auth.api.getSession({
-        headers: await headers()
-    });
+  const session = await getServerSession();
+  const user = session?.user;
 
-    
+  if(!user) {
+    redirect('/signin');
+  }
+
 
   return (
     <main>
       <div className="min-h-full flex flex-col font-intel">
-        <Navbar />
+        <Navbar user={user} />
         {children} 
         <Toaster richColors />
       </div>
     </main>
 
   );
+
 }
