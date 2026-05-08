@@ -19,17 +19,11 @@ async function Blog() {
 
       </div>
      
-     <section className="border-2 h-screen  py-16 px-6">
+     <section className="border-2 h-full  py-16 px-6">
       <div className="max-w-7xl mx-auto">
             <Listblog/>
       </div>
     </section>
-     {/* <div className='border-2 min-h-full w-full p-5'>
-      <Listblog/>
-      <CardImage/>
-      <CardImage/>
-      <CardImage/>
-     </div> */}
     </div>
   )
 }

@@ -22,7 +22,7 @@ useEffect(()=>{
 },[pathname])
 
   return (
-    <div className=''>
+    <div className='h-full'>
 
       {
           blogs.length === 0 ? (

@@ -1,5 +1,3 @@
-
-
 // store.ts
 import { TypeBlog } from '@/types/tblog'
 import { create } from 'zustand'
@@ -91,6 +89,8 @@ export const useBlogStore = create<BlogState>((set,get) => ({
              return null; 
           }
     },
+
+
 
     addBlog: async({title,text}:blogProps)=>{
         set({isLoading:true,error:null});
