@@ -21,7 +21,9 @@ function Navbar({ user }:any) {
   return (
     <>
     <div className=' sticky top-0 z-[100] mx-auto flex flex-wrap w-full items-center justify-between bg-background border-b border-gray-700 h-full'>
-        <div className='h-12 w-16'>ww</div>
+        <div className='h-12 w-10 flex-center ml-5'>
+            <img src="/logo.png" alt="logo blog" />
+        </div>
             <div className='w-1/3 justify-end items-center hidden md:flex '>
             {
                 user ? (
@@ -34,7 +36,7 @@ function Navbar({ user }:any) {
                 
             </div>
         <div className='md:hidden'>      
-            <Button onClick={toggleNavbar} >{isOpen ? <FaXmark/> : <IoMenu/>}</Button> 
+            <Button className='rounded-none p-6' onClick={toggleNavbar} >{isOpen ? <FaXmark/> : <IoMenu/>}</Button> 
         </div>
             {isOpen && (
         <div className='flex flex-col basis-full items-center'>

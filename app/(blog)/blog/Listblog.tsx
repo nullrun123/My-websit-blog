@@ -5,7 +5,7 @@ import React, { useEffect } from 'react'
 import { format } from 'date-fns';
 import { CardImage } from '@/components/blog/CardImage';
 import { usePathname } from 'next/navigation';
-function Listblog() {
+function Listblog({query}:{query:string}){
 const fetchblog = useBlogStore((state)=>state.fetchBlog);
 const blogs = useBlogStore((state)=>state.blogs);
 const isLoading = useBlogStore((state)=>state.isLoading);
@@ -14,12 +14,18 @@ const handleformatDate = (day:string)=>{
   const fDay = format(day, "yyyy-MM-dd");
   return fDay;
 }
+
+// filterblog
+  const filterBlog = Array.isArray(blogs) ? blogs.filter((b)=>{
+    return b.title?.toLowerCase().includes(query?.toLowerCase() ?? '');
+  }) : [];
   
-
-
 useEffect(()=>{
     fetchblog()
+    
 },[pathname])
+
+
 
   return (
     <div className='h-full'>
@@ -31,13 +37,21 @@ useEffect(()=>{
             </div>
           ):(
             <ul className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+              
               {
-                 blogs.map((b)=>(
+              filterBlog.length === 0 ?(
+                <div>Cant find</div>
+              ):(
+                
+                 filterBlog.map((b)=>(
                   <li key={b.id}>
                     <CardImage id={b.id} title={b.title} desc={b.text} date={handleformatDate(b.createAt)} user={b.user} image={b.image} IsDelete={false}/> 
                  </li>
               ))
-              }
+             )
+                  
+                }
+           
             </ul>
             
           )

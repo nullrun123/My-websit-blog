@@ -156,7 +156,7 @@ export function FormSignIn() {
             />
 
             {
-              error ?? (
+              error && (
                  <div role="alert" className="text-sm text-red-600">
                 {error}
               </div>

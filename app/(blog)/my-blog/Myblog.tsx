@@ -1,10 +1,12 @@
 'use client'
 
 import { CardImage } from '@/components/blog/CardImage';
+import { Button } from '@/components/ui/button';
 import { User } from '@/lib/auth'
 import { useBlogStore } from '@/lib/blog-store';
 import { TypeBlog } from '@/types/tblog';
 import { format } from 'date-fns';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 
 interface UserProps{
@@ -36,16 +38,19 @@ function Myblog({user}:UserProps) {
     
   
   return (
-     <div className='h-full p-5 flex-center flex-col gap-5'>
+     <div className='h-full p-5 flex-center flex-col gap-3'>
     
         <h1 className='text-4xl font-extrabold '>My Blogs</h1>
+          <Button>
+              <Link href={'/blog/create'}>create Blog</Link>
+        </Button>
           {
               MBlog.length === 0 ? (
                 <div className=''>
                  <h1 className='text-5xl'> No blog create this.</h1>
                 </div>
               ):(
-                <ul className='grid grid-cols-1 md:grid-cols-3 gap-8  w-full p-2'>
+                <ul className='grid grid-cols-1 md:grid-cols-3 gap-5  w-full p-2'>
                   {
                      MBlog.map((b)=>(
                       <li key={b.id}>
