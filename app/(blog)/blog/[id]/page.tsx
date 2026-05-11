@@ -69,16 +69,18 @@ function page(props: { params: Promise<PropsId> }) {
         ) : (
           <div className='w-full h-full flex-center flex-col p-12 gap-5 relative'>
                <Button className='absolute top-5 left-5  md:left-40' variant="outline" size="icon" aria-label="Go Back">
-                <Link href={'/blog'}>
+                <Link className='w-full h-full flex-center' href={'/blog'}>
                   <ArrowLeftIcon />
                  </Link> 
               </Button>
             <div className='w-full max-w-2xl mt-5'>
-              <div className='h-100 w-full'>
+              <div className='relative h-96 w-full'>
+                
                  <Image
-                    src="/window.svg"
-                    width={100}
-                    height={100}
+                 className='object-cover'
+                    src={data?.image ?? "/placeholder.png"}
+                   
+                    fill         
                     alt="Picture of the author"
                   />
               </div>

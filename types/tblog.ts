@@ -7,6 +7,8 @@ export interface TypeBlog {
     text:string
     createAt:string
     updateAt:string
+    user:User
+    image:string
     userId:string
 }
 

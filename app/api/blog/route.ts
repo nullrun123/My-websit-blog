@@ -39,7 +39,7 @@ export async function POST(resquet:NextRequest){
 
     try{
         const blog = await resquet.json();
-        const { title,text,user } = blog;
+        const { title,text,image,user } = blog;
 
         if(!user){
             return NextResponse.json({
@@ -58,13 +58,35 @@ export async function POST(resquet:NextRequest){
          })
         }
 
+        // Validate base64 image if provided
+        let imageData: string | null = null;
+        if (image) {
+            // Check if it's a valid base64 image string
+            if (typeof image === 'string' && image.startsWith('data:image/')) {
+                imageData = image;
+            } else {
+                return NextResponse.json({
+                    success:false,
+                    error:"Invalid image format",
+                    status:400,
+                })
+            }
+        }
+
+        // Prepare blog data with conditional image field
+        const blogData: any = {
+            title: title.trim(),
+            text: text.trim(),
+            userId: user.id,
+        };
+        
+        // Only add image if it exists
+        if (imageData) {
+            blogData.image = imageData;
+        }
+
         const blogdata = await prisma.blog.create({
-            data:{
-                title:title.trim(),
-                text:text.trim(),
-                image: "https://avatar.vercel.sh/shadcn1",
-                userId: user.id,
-            },
+            data: blogData,
             include:{
                 user:true,
             }

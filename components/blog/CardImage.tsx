@@ -17,26 +17,31 @@ interface BlogProps {
     title:string,
     desc:string,
     date:string,
+    image:string
     user:User,
     IsDelete:boolean
 }
 
-export function CardImage({id,title,desc,date,user,IsDelete=false}:BlogProps) {
+export function CardImage({id,title,image,desc,date,user,IsDelete=false}:BlogProps) {
 
   return (
     <Card className="relative mx-auto w-full max-w-sm pt-0">
       <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
       <img
-        src="https://avatar.vercel.sh/shadcn1"
+        src={image}
         alt="Event cover"
-        className="relative z-20 aspect-video w-full object-cover brightness-60 grayscale dark:brightness-40"
+        className="relative z-20 aspect-video w-full object-cover brightness-60 grayscale dark:brightness-100"
       />
       <CardHeader>
         <CardAction>
           <Badge variant="secondary">Featured</Badge>
         </CardAction>
         <CardTitle>{title}</CardTitle>
-        <h1 className="text-xl">createBy: {user.name }</h1>
+        <h1 className="text-md">createBy: 
+          {
+            user.name.length >= 15 ? user.name.slice(0,15)+"..." : user.name
+          }
+        </h1>
         <p className="text-sm text-gray-200">{date}</p>
         
         

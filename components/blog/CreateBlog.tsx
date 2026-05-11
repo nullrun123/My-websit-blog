@@ -30,6 +30,16 @@ import {
   InputGroupTextarea,
 } from "@/components/ui/input-group"
 
+const MAX_FILE_SIZE = 5000000 
+const ACCEPTED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+  'image/svg+xml',
+]
+
+
 import { useBlogStore } from '@/lib/blog-store'
 import { useRouter } from 'next/navigation'
 import { User } from "@/lib/auth"
@@ -43,6 +53,15 @@ const formSchema = z.object({
     .string()
     .min(20, "Description must be at least 20 characters.")
     .max(1000, "Description must be at most 1000 characters."),
+  image: z
+    .any()
+    .refine((files) => files?.length >= 1, { message: 'Image is required.' })
+    .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), {
+      message: '.jpg, .jpeg, .png, .webp and .svg files are accepted.',
+    })
+    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, {
+      message: `Max file size is 5MB.`,
+    }),
 })
 
 function Createblog({ user }: { user: User }) {
@@ -56,15 +75,14 @@ function Createblog({ user }: { user: User }) {
     defaultValues: {
       title: "",
       text: "",
+       image: undefined,
     },
   })
 
-
-
     function onSubmit(data: z.infer<typeof formSchema>) {
-      const {title,text } = data;
+      const {title,text,image} = data;
       
-       addBlog({title,text,user});
+       addBlog({title,text,image:image[0],user});
 
       toast.success("Blog has been created", { position: "top-center" })
 
@@ -127,6 +145,25 @@ function Createblog({ user }: { user: User }) {
                     </InputGroupAddon>
                   </InputGroup>
               
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+             <Controller
+              name="image"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="picture">Picture</FieldLabel>
+                  <Input id="picture" type="file"  accept="image/png, image/jpeg, image/jpg, image/webp, image/svg+xml"
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                             const files = e.target.files;
+                            field.onChange(files)
+                      }}/>
+                  <FieldDescription>Select a picture to upload.</FieldDescription>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}

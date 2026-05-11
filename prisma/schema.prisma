@@ -81,7 +81,7 @@ model Blog{
   id String @id @default(uuid())
   title String
   text String
-  image String
+  image String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 

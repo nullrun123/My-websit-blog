@@ -6,7 +6,8 @@ import { User } from './auth'
 interface blogProps{
     title:string
     text:string
-    user:User,
+    image:File
+    user:User
 }
 // Define types for state & actions
 interface BlogState {
@@ -17,7 +18,7 @@ interface BlogState {
 
     fetchBlog: ()=>Promise<void>
     getBlog:(id:string) => Promise<void>
-    addBlog: ({title,text,user}:blogProps) => void
+    addBlog: ({title,text,image,user}:blogProps) => void
     deleteBlog:(id:string) => Promise<void>
     updateBlog: (id:string,data: {title?:string,text?:string}) => Promise<void>
 
@@ -95,20 +96,32 @@ export const useBlogStore = create<BlogState>((set,get) => ({
 
 
 
-    addBlog: async({title,text,user}:blogProps)=>{
+    addBlog: async({title,text,image,user}:blogProps)=>{
         set({isLoading:true,error:null});
 
         try{
 
+            console.log(image)
+            
+            // Convert image to base64
+            const imageBase64 = await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result as string);
+                reader.onerror = reject;
+                reader.readAsDataURL(image);
+            });
             
             const newdata = {
                 title,
                 text,
+                image: imageBase64,
                 user
             }
 
+            
+
             const res = await fetch('/api/blog',{
-                method:"POST",
+                    method:"POST",
                  headers: { 'Content-Type': 'application/json' }, 
                  body:JSON.stringify(newdata)
             })
