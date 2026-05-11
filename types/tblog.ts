@@ -1,4 +1,5 @@
-import { User } from "@/app/generated/prisma/client";
+import { User } from "@/lib/auth"
+
 
 export interface TypeBlog {
     id:string,
@@ -6,6 +7,7 @@ export interface TypeBlog {
     text:string
     createAt:string
     updateAt:string
+    userId:string
 }
 
 

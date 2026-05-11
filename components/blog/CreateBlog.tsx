@@ -32,6 +32,7 @@ import {
 
 import { useBlogStore } from '@/lib/blog-store'
 import { useRouter } from 'next/navigation'
+import { User } from "@/lib/auth"
 
 const formSchema = z.object({
   title: z
@@ -41,11 +42,10 @@ const formSchema = z.object({
   text: z
     .string()
     .min(20, "Description must be at least 20 characters.")
-    .max(200, "Description must be at most 200 characters."),
+    .max(1000, "Description must be at most 1000 characters."),
 })
 
-function Createblog() {
-
+function Createblog({ user }: { user: User }) {
   const addBlog = useBlogStore((state)=>state.addBlog);
   const isLoading = useBlogStore((state)=>state.isLoading);
   const router = useRouter();
@@ -61,9 +61,10 @@ function Createblog() {
 
 
 
-     function onSubmit(data: z.infer<typeof formSchema>) {
+    function onSubmit(data: z.infer<typeof formSchema>) {
       const {title,text } = data;
-       addBlog({title,text});
+      
+       addBlog({title,text,user});
 
       toast.success("Blog has been created", { position: "top-center" })
 
@@ -121,7 +122,7 @@ function Createblog() {
                     />
                     <InputGroupAddon align="block-end">
                       <InputGroupText className="tabular-nums">
-                        {field.value.length}/200 characters
+                        {field.value.length}/1000 characters
                       </InputGroupText>
                     </InputGroupAddon>
                   </InputGroup>

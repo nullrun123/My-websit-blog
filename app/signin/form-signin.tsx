@@ -77,6 +77,7 @@ export function FormSignIn() {
   async function handleOauth(){
     setError(null);
     setIsLoading(true);
+    
     const { error } = await signIn.social({
       provider:"google",
       callbackURL:'/blog',

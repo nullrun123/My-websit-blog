@@ -6,10 +6,11 @@ import { userImageProps } from '@/types/tblog'
 
 function MenuLink({avatar}:userImageProps) {
   return (
-    <div className='flex flex-col md:flex-row gap-6'>
-        <Link className=' rounded text-2xl px-4 py-2 text-white font-intel' href={'/blog'}>Blog</Link>
-        <Link className=' rounded text-2xl px-4 py-2 text-white font-intel' href={'/about'}>About</Link>
-        <div className='mr-10 flex-center'>
+    <div className='flex flex-col md:flex-row w-full md:w-auto '>
+        <Link className='w-full text-2xl px-4 py-2 text-white font-intel border-l-2 flex-center' href={'/blog'}>Blog</Link>
+        <Link className='w-full text-2xl px-4 py-2 text-white font-intel border-l-2 flex-center' href={'/my-blog'}>MyBlog</Link>
+        <Link className='w-full text-2xl px-4 py-2 text-white font-intel border-2 flex-center' href={'/about'}>About</Link>
+        <div className='mr-8 ml-8 flex-center'>
           <MenuAvatar avatar={avatar}/>
         </div>
         

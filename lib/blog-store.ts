@@ -1,10 +1,12 @@
 // store.ts
 import { TypeBlog } from '@/types/tblog'
 import { create } from 'zustand'
+import { User } from './auth'
 
 interface blogProps{
     title:string
     text:string
+    user:User,
 }
 // Define types for state & actions
 interface BlogState {
@@ -15,7 +17,7 @@ interface BlogState {
 
     fetchBlog: ()=>Promise<void>
     getBlog:(id:string) => Promise<void>
-    addBlog: ({title,text}:blogProps) => void
+    addBlog: ({title,text,user}:blogProps) => void
     deleteBlog:(id:string) => Promise<void>
     updateBlog: (id:string,data: {title?:string,text?:string}) => Promise<void>
 
@@ -74,6 +76,7 @@ export const useBlogStore = create<BlogState>((set,get) => ({
 
             const result = await res.json();
 
+            console.log(result)
               if(result.success){
                 set({isLoading:false})
                 return result.data;
@@ -92,7 +95,7 @@ export const useBlogStore = create<BlogState>((set,get) => ({
 
 
 
-    addBlog: async({title,text}:blogProps)=>{
+    addBlog: async({title,text,user}:blogProps)=>{
         set({isLoading:true,error:null});
 
         try{
@@ -100,7 +103,8 @@ export const useBlogStore = create<BlogState>((set,get) => ({
             
             const newdata = {
                 title,
-                text
+                text,
+                user
             }
 
             const res = await fetch('/api/blog',{

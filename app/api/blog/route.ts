@@ -10,6 +10,9 @@ export async function GET(){
     
     try{
         const data = await prisma.blog.findMany({
+            include:{
+                user:true,
+            },
             orderBy:{
                 createAt: 'desc'
             }
@@ -36,13 +39,9 @@ export async function POST(resquet:NextRequest){
 
     try{
         const blog = await resquet.json();
-        const { title,text } = blog;
+        const { title,text,user } = blog;
 
-        const session = await auth.api.getSession({
-            headers: await headers()
-        });
-
-        if(!session){
+        if(!user){
             return NextResponse.json({
                 success:false,
                 error:"Failed to create blog",
@@ -63,7 +62,11 @@ export async function POST(resquet:NextRequest){
             data:{
                 title:title.trim(),
                 text:text.trim(),
-                userId: session.user.id,
+                image: "https://avatar.vercel.sh/shadcn1",
+                userId: user.id,
+            },
+            include:{
+                user:true,
             }
         })
 

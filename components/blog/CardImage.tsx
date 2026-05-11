@@ -8,16 +8,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { User } from "@/lib/auth"
 import Link from "next/link"
+import { AlertDelbtn } from "../button/AlertDelbtn"
 
 interface BlogProps {
     id:string,
     title:string,
     desc:string,
     date:string,
+    user:User,
+    IsDelete:boolean
 }
 
-export function CardImage({id,title,desc,date}:BlogProps) {
+export function CardImage({id,title,desc,date,user,IsDelete=false}:BlogProps) {
+
   return (
     <Card className="relative mx-auto w-full max-w-sm pt-0">
       <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
@@ -31,14 +36,26 @@ export function CardImage({id,title,desc,date}:BlogProps) {
           <Badge variant="secondary">Featured</Badge>
         </CardAction>
         <CardTitle>{title}</CardTitle>
+        <h1 className="text-xl">createBy: {user.name }</h1>
         <p className="text-sm text-gray-200">{date}</p>
-        <CardDescription>
-          {desc.slice(0,20)+"...."}
-        </CardDescription>
+        
         
       </CardHeader>
       <CardFooter>
-        <Button asChild  className="w-full"><Link href={`/blog/${id}`}>View Event</Link></Button>
+        
+        {
+          IsDelete ? (
+            <div className="flex gap-2">
+              <Button asChild  className="w-full"><Link href={`/blog/${id}`}>View Event</Link></Button>
+           
+                 <AlertDelbtn  id={id}/>
+              
+             
+            </div>
+          ):(
+            <Button asChild  className="w-full"><Link href={`/blog/${id}`}>View Event</Link></Button>
+          )
+        }
       </CardFooter>
     </Card>
   )

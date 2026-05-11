@@ -34,7 +34,7 @@ useEffect(()=>{
               {
                  blogs.map((b)=>(
                   <li key={b.id}>
-                    <CardImage id={b.id} title={b.title} desc={b.text} date={handleformatDate(b.createAt)}/> 
+                    <CardImage id={b.id} title={b.title} desc={b.text} date={handleformatDate(b.createAt)} user={b.user}/> 
                  </li>
               ))
               }

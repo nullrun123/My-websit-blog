@@ -10,12 +10,17 @@ import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { ArrowLeftIcon } from 'lucide-react';
 import Link from 'next/link';
+
+import { User } from '@/lib/auth';
+
  
 interface PropsId {
   id: string
 }
 
 function page(props: { params: Promise<PropsId> }) {
+
+  
   const [data, setData] = useState<TypeBlog | null>(null);
   const getblog = useBlogStore((state) => state.getBlog);
   const isLoading = useBlogStore((state) => state.isLoading);
@@ -43,7 +48,7 @@ function page(props: { params: Promise<PropsId> }) {
       {
         isLoading ? (
           <div className='w-full h-full flex-center flex-col p-12 gap-5'>
-            <div className='w-full max-w-2xl '>
+            <div className='w-full max-w-2xl mt-6'>
               <Skeleton className="h-100 w-full" /> </div>
             <div className="flex w-full max-w-2xl flex-col gap-2">
               <Skeleton className="h-4 w-full" />
@@ -87,7 +92,7 @@ function page(props: { params: Promise<PropsId> }) {
                   <Badge variant="destructive">Destructive</Badge>
                 </div>
               <p className='text-xl text-gray-300'>Date : {handleformatDate(data?.createAt)}</p>
-              <p className='text-md border-2 w-full wrap-break-word'>&nbsp;&nbsp;{data?.text}</p>
+              <p className='text-md w-full wrap-break-word'>&nbsp;&nbsp;{data?.text}</p>
             </div>
           </div>
         )
