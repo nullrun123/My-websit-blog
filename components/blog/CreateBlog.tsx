@@ -43,6 +43,8 @@ const ACCEPTED_IMAGE_TYPES = [
 import { useBlogStore } from '@/lib/blog-store'
 import { useRouter } from 'next/navigation'
 import { User } from "@/lib/auth"
+import { FileUpload, FileUploadDropzone, FileUploadItem, FileUploadItemDelete, FileUploadItemMetadata, FileUploadItemPreview, FileUploadList, FileUploadTrigger } from "../ui/file-upload"
+import { CloudUpload, X } from "lucide-react"
 
 const formSchema = z.object({
   title: z
@@ -152,7 +154,55 @@ function Createblog({ user }: { user: User }) {
               )}
             />
 
-             <Controller
+     <Controller
+        control={form.control}
+        name="image"
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel>Attachments</FieldLabel>
+            <FileUpload
+              value={field.value}
+              onValueChange={field.onChange}
+              accept="image/*"
+              maxFiles={2}
+              maxSize={5 * 1024 * 1024}
+              onFileReject={(_, message) => {
+                form.setError("image", { message });
+              }}
+              multiple
+            >
+              <FileUploadDropzone className="flex-row flex-wrap border-dotted text-center">
+                <CloudUpload className="size-4" />
+                <span className="text-sm">Drag and drop or</span>
+                <FileUploadTrigger asChild>
+                  <Button variant="link" size="sm" className="h-auto p-0">
+                    choose files
+                  </Button>
+                </FileUploadTrigger>
+                <span className="text-sm">to upload</span>
+              </FileUploadDropzone>
+              <FileUploadList>
+                {field.value?.map((file, index) => (
+                  <FileUploadItem key={index} value={file}>
+                    <FileUploadItemPreview />
+                    <FileUploadItemMetadata />
+                    <FileUploadItemDelete asChild>
+                      <Button variant="ghost" size="icon" className="size-7">
+                        <X className="size-4" />
+                      </Button>
+                    </FileUploadItemDelete>
+                  </FileUploadItem>
+                ))}
+              </FileUploadList>
+            </FileUpload>
+            <FieldDescription>
+              Upload up to 2 images (max 5MB each)
+            </FieldDescription>
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
+             {/* <Controller
               name="image"
               control={form.control}
               render={({ field, fieldState }) => (
@@ -169,7 +219,7 @@ function Createblog({ user }: { user: User }) {
                   )}
                 </Field>
               )}
-            />
+            /> */}
           </FieldGroup>
         </form>
       </CardContent>

@@ -43,7 +43,7 @@ function FieldGroup({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="field-group"
       className={cn(
-        "group/field-group @container/field-group flex w-full flex-col gap-2 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4",
+        "group/field-group @container/field-group flex w-full flex-col gap-7 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4",
         className
       )}
       {...props}
@@ -52,7 +52,7 @@ function FieldGroup({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 const fieldVariants = cva(
-  "group/field flex w-full gap-2 data-[invalid=true]:text-destructive",
+  "group/field flex w-full gap-3 data-[invalid=true]:text-destructive",
   {
     variants: {
       orientation: {
@@ -106,7 +106,7 @@ function FieldLabel({
     <Label
       data-slot="field-label"
       className={cn(
-        "group/field-label peer/field-label flex w-fit gap-1 leading-snug group-data-[disabled=true]/field:opacity-50 has-data-checked:border-primary/30 has-data-checked:bg-primary/5 has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border *:data-[slot=field]:p-3 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10",
+        "group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-data-checked:border-primary/30 has-data-checked:bg-primary/5 has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border *:data-[slot=field]:p-3 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10",
         "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col",
         className
       )}
@@ -199,7 +199,7 @@ function FieldError({
     }
 
     return (
-      <ul className="ml-1 flex list-disc flex-col ">
+      <ul className="ml-4 flex list-disc flex-col gap-1">
         {uniqueErrors.map(
           (error, index) =>
             error?.message && <li key={index}>{error.message}</li>
@@ -216,7 +216,7 @@ function FieldError({
     <div
       role="alert"
       data-slot="field-error"
-      className={cn("text-xs font-normal text-destructive ", className)}
+      className={cn("text-sm font-normal text-destructive", className)}
       {...props}
     >
       {content}
