@@ -19,7 +19,6 @@ const handleformatDate = (day:string)=>{
 
 
 // filterblog สร้าง array มาเก็บquery ใหม่ห
- 
   const filterBlogs = useMemo(() =>{
   if(!Array.isArray(blogs)) return [];
 
@@ -37,8 +36,6 @@ useEffect(()=>{
     fetchblog()
     
 },[pathname])
-
-
 
   return (
     <div className='h-full'>
@@ -58,7 +55,7 @@ useEffect(()=>{
                 
                  filterBlogs.map((b)=>(
                   <li key={b.id}>
-                    <CardImage id={b.id} title={b.title} desc={b.text} date={handleformatDate(b.createAt)} user={b.user} image={b.image} IsDelete={false}/> 
+                    <CardImage id={b.id} title={b.title} desc={b.text} date={handleformatDate(b.createAt)} user={b.user} image={b.image}  /> 
                  </li>
               ))
              )

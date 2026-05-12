@@ -54,7 +54,7 @@ function Myblog({user}:UserProps) {
                   {
                      MBlog.map((b)=>(
                       <li key={b.id}>
-                        <CardImage id={b.id} title={b.title} desc={b.text} date={handleformatDate(b.createAt)} user={b.user} IsDelete={true} image={b.image}/> 
+                        <CardImage id={b.id} title={b.title} desc={b.text} date={handleformatDate(b.createAt)} user={b.user} IsDelete={true} image={b.image} isEdit={true}/> 
                      </li>
                   ))
                   }

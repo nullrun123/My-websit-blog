@@ -46,7 +46,7 @@ import { User } from "@/lib/auth"
 import { FileUpload, FileUploadDropzone, FileUploadItem, FileUploadItemDelete, FileUploadItemMetadata, FileUploadItemPreview, FileUploadList, FileUploadTrigger } from "../ui/file-upload"
 import { CloudUpload, X } from "lucide-react"
 
-const formSchema = z.object({
+export const formSchema = z.object({
   title: z
     .string()
     .min(5, "Bug title must be at least 5 characters.")
@@ -182,7 +182,7 @@ function Createblog({ user }: { user: User }) {
                 <span className="text-sm">to upload</span>
               </FileUploadDropzone>
               <FileUploadList>
-                {field.value?.map((file, index) => (
+                {Array.isArray(field.value) &&  field.value?.map((file, index) => (
                   <FileUploadItem key={index} value={file}>
                     <FileUploadItemPreview />
                     <FileUploadItemMetadata />

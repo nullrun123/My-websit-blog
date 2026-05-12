@@ -9,6 +9,11 @@ interface blogProps{
     image:File
     user:User
 }
+interface blogPropsNouser{
+    title:string
+    text:string
+    image:File
+}
 // Define types for state & actions
 interface BlogState {
 
@@ -21,7 +26,7 @@ interface BlogState {
     getBlog:(id:string) => Promise<void>
     addBlog: ({title,text,image,user}:blogProps) => void
     deleteBlog:(id:string) => Promise<void>
-    updateBlog: (id:string,data: {title?:string,text?:string}) => Promise<void>
+    updateBlog: (id:string,{title,text,image}:blogPropsNouser) => Promise<void>
 
     // helper
     setSortOrder: (order: 'asc' | 'des' | null) => void
@@ -183,13 +188,27 @@ export const useBlogStore = create<BlogState>((set,get) => ({
     }    ,
 
 
-    updateBlog: async(id:string,data: {title?:string,text?:string})=>{
+    updateBlog: async(id:string,{title,text,image}:blogPropsNouser)=>{
          set({isLoading:true,error:null});
 
          const originalBlog = get().blogs;
 
+          const imageBase64 = await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result as string);
+                reader.onerror = reject;
+                reader.readAsDataURL(image);
+            });
+
+         const newblog = {
+            title,
+            text,
+            image: imageBase64,
+       
+         }
+
          set((state)=>({
-            blogs: state.blogs.map(blog => blog.id === id ? {...blog,...data} : blog)
+            blogs: state.blogs.map(blog => blog.id === id ? {...blog,...newblog} : blog)
          }))
 
         
@@ -197,7 +216,7 @@ export const useBlogStore = create<BlogState>((set,get) => ({
             const res = await fetch(`/api/blog/${id}`,{
                 method:"PUT",
                 headers: { 'Content-Type': 'application/json' }, 
-                 body:JSON.stringify(data)
+                 body:JSON.stringify(newblog)
             })
             const result = await res.json();
 

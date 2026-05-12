@@ -19,10 +19,11 @@ interface BlogProps {
     date:string,
     image:string
     user:User,
-    IsDelete:boolean
+    IsDelete?:boolean,
+    isEdit?:boolean
 }
 
-export function CardImage({id,title,image,desc,date,user,IsDelete=false}:BlogProps) {
+export function CardImage({id,title,image,desc,date,user,IsDelete=false,isEdit=false}:BlogProps) {
 
   return (
     <Card className="relative mx-auto w-full max-w-sm pt-0">
@@ -39,7 +40,10 @@ export function CardImage({id,title,image,desc,date,user,IsDelete=false}:BlogPro
         <CardTitle>{title}</CardTitle>
         <h1 className="text-md">createBy: 
           {
-            user.name.length >= 15 ? user.name.slice(0,15)+"..." : user.name
+            user?.name ? (
+               user.name.length >= 15 ? user.name.slice(0,15)+"..." : user.name
+            ):"Unknown"
+           
           }
         </h1>
         <p className="text-sm text-gray-200">{date}</p>
@@ -51,14 +55,11 @@ export function CardImage({id,title,image,desc,date,user,IsDelete=false}:BlogPro
         {
           IsDelete ? (
             <div className="flex gap-2">
-              <Button asChild  className="w-full"><Link href={`/blog/${id}`}>View Event</Link></Button>
-           
-                 <AlertDelbtn  id={id}/>
-              
-             
+              <Button asChild  className="w-full"><Link href={isEdit ? `/blog/edit/${id}` : `/blog/${id}`}>View Event</Link></Button>
+                <AlertDelbtn  id={id}/>
             </div>
           ):(
-            <Button asChild  className="w-full"><Link href={`/blog/${id}`}>View Event</Link></Button>
+            <Button asChild  className="w-full"><Link href={isEdit ? `/blog/edit/${id}` : `/blog/${id}`}>View Event</Link></Button>
           )
         }
       </CardFooter>

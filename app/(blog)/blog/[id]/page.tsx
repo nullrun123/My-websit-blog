@@ -67,6 +67,7 @@ function page(props: { params: Promise<PropsId> }) {
             </div>
           </div>
         ) : (
+          
           <div className='w-full h-full flex-center flex-col p-12 gap-5 relative'>
                <Button className='absolute top-5 left-5  md:left-40' variant="outline" size="icon" aria-label="Go Back">
                 <Link className='w-full h-full flex-center' href={'/blog'}>
@@ -93,7 +94,7 @@ function page(props: { params: Promise<PropsId> }) {
                   <Badge variant="secondary">Secondary</Badge>
                   <Badge variant="destructive">Destructive</Badge>
                 </div>
-              <p className='text-xl text-gray-300'>Date : {handleformatDate(data?.createAt)}</p>
+              <p className='text-xl text-gray-300'>Date : {handleformatDate(data?.createAt ?? '')}</p>
               <p className='text-md w-full wrap-break-word'>&nbsp;&nbsp;{data?.text}</p>
             </div>
           </div>

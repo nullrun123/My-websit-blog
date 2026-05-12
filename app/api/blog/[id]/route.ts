@@ -69,7 +69,7 @@ export async function PUT(resquet:NextRequest,props:{params:PropsId}){
         const id = params.id;
         const body = await resquet.json();
 
-        const { text , title } = body;
+        const { text , title ,image} = body;
 
         if(!title || title.trim() === "" || !text || text.trim() === ""){
             return NextResponse.json({
@@ -78,12 +78,30 @@ export async function PUT(resquet:NextRequest,props:{params:PropsId}){
                 status:400,
          })
         }
+
+        let imageData: string | null = null;
+        if (image) {
+            // Check if it's a valid base64 image string
+            if (typeof image === 'string' && image.startsWith('data:image/')) {
+                imageData = image;
+            } else {
+                return NextResponse.json({
+                    success:false,
+                    error:"Invalid image format",
+                    status:400,
+                })
+            }
+        }
         
-        const newdata = {
+        const newdata:any = {
             text,
-            title
+            title,
+
         }
 
+        if (imageData) {
+            newdata.image = imageData;
+        }
 
         const data = await prisma.blog.update({
             where:{
