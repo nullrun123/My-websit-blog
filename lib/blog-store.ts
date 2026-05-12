@@ -15,6 +15,7 @@ interface BlogState {
   blogs: TypeBlog[]
   isLoading: boolean
   error:string | null
+  sortorder: 'asc' | 'des' | null
 
     fetchBlog: ()=>Promise<void>
     getBlog:(id:string) => Promise<void>
@@ -23,6 +24,7 @@ interface BlogState {
     updateBlog: (id:string,data: {title?:string,text?:string}) => Promise<void>
 
     // helper
+    setSortOrder: (order: 'asc' | 'des' | null) => void
     setIsloading: (loading:boolean)=>void
     setError:(error:string | null)=>void
 
@@ -38,7 +40,8 @@ export const useBlogStore = create<BlogState>((set,get) => ({
     blogs:[],
     isLoading:false,
     error:null,
-
+    sortorder:null,
+    setSortOrder: (order) => set({ sortorder: order }),
 
     setIsloading:(loading:boolean)=> set({isLoading:false}),
     setError: (error:string| null)=> set({error}),
