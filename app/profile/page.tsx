@@ -3,11 +3,12 @@ import { getServerSession } from '@/lib/get-session'
 
 import ProfileImage from './ProfileImage';
 import ChangeUser from '@/components/profile/ChangeUser';
+import InputChangePas from '@/components/profile/InputChangePas';
 
 async function page() {
     const session = await getServerSession();
     const user = session?.user;
-    console.log(user);
+   
   return (
     <div className='w-full'>
       <Navbar user={user}/>
@@ -19,12 +20,16 @@ async function page() {
           <ProfileImage user={user}/>
         )
       }
-   
+
+        <div>
+          {
+          user && (
+          <ChangeUser user={user}/>
+               )
+          }
+          <InputChangePas/>
+        </div>
     </div>
-    <div>
-      <ChangeUser user={user}/>
-    </div>
-     
     </div>
   )
 }

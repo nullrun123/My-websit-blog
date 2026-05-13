@@ -38,7 +38,7 @@ function Myblog({user}:UserProps) {
     
   
   return (
-     <div className='h-full p-5 flex-center flex-col gap-3'>
+     <div className='h-full p-5 flex-center flex-col gap-2 '>
     
         <h1 className='text-4xl font-extrabold '>My Blogs</h1>
           <Button>
@@ -50,7 +50,7 @@ function Myblog({user}:UserProps) {
                  <h1 className='text-5xl'> No blog create this.</h1>
                 </div>
               ):(
-                <ul className='grid grid-cols-1 md:grid-cols-3 gap-5  w-full p-2'>
+                <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2  w-full pl-20 pr-20'>
                   {
                      MBlog.map((b)=>(
                       <li key={b.id}>

@@ -54,12 +54,15 @@ export function CardImage({id,title,image,desc,date,user,IsDelete=false,isEdit=f
         
         {
           IsDelete ? (
-            <div className="flex gap-2">
-              <Button asChild  className="w-full"><Link href={isEdit ? `/blog/edit/${id}` : `/blog/${id}`}>View Event</Link></Button>
-                <AlertDelbtn  id={id}/>
+            <div className="flex gap-2 w-full">
+              <Button asChild  className="w-1/2"><Link href={isEdit ? `/blog/edit/${id}` : `/blog/${id}`}>View Event</Link></Button>
+              <div className="w-1/2">
+                 <AlertDelbtn  id={id}/>
+              </div>
+               
             </div>
           ):(
-            <Button asChild  className="w-full"><Link href={isEdit ? `/blog/edit/${id}` : `/blog/${id}`}>View Event</Link></Button>
+            <Button asChild  className=" md:w-auto"><Link href={isEdit ? `/blog/edit/${id}` : `/blog/${id}`}>View Event</Link></Button>
           )
         }
       </CardFooter>
