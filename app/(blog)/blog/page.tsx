@@ -16,7 +16,7 @@ async function Blog({searchParams}:{
   const { query } = await searchParams;
   const q =  query || ''
   return (
-    <div className='w-full min-h-screen flex flex-col itmes-center justify-center p-2.5 pt-5'>
+    <div className='w-full h-full flex flex-col itmes-center justify-center p-2.5 pt-5'>
       <div className=' h-full flex-center border-2'>
       <SearchInput/>
       </div>

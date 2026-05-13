@@ -28,34 +28,22 @@ import { signIn } from "@/lib/auth-client"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-const formSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "This field has to be filled." })
-    .email("This is not a valid email."),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long" })
-    .max(20, { message: "Password must be less than 20 characters" })
-    .refine((val) => /[A-Z]/.test(val), { message: "Password must contain at least one uppercase letter" })
-    .refine((val) => /[a-z]/.test(val), { message: "Password must contain at least one lowercase letter" })
-    .refine((val) => /[0-9]/.test(val), { message: "Password must contain at least one number" })
-    .refine((val) => /[!@#$%^&*]/.test(val), { message: "Password must contain at least one special character" })
-})
+import { formSchemaSignin } from "@/types/SchemaZod"
+
 
 export function FormSignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>('');
   const router= useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof formSchemaSignin>>({
+    resolver: zodResolver(formSchemaSignin),
     defaultValues: {
       email: "",
       password: "",
     },
   })
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: z.infer<typeof formSchemaSignin>) {
     setError(null);
     setIsLoading(true);
     const { email, password } = data;
@@ -165,6 +153,10 @@ export function FormSignIn() {
        
 
        <div className="flex-col space-y-3"> 
+        
+       <div className="no-underline hover:underline">
+        <Link href={'/sendpassword-reset'}>forget password?</Link>
+       </div>
          <Button disabled={isLoading} type="submit" className="bg-white text-black cursor-pointer w-full" aria-label="Submit" variant="default">Sign In</Button>
         <Button variant="outline" className="w-full" disabled={isLoading} onClick={handleOauth}>
           Login with Google

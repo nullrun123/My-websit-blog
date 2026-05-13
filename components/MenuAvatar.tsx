@@ -25,6 +25,7 @@ import { signOut } from "@/lib/auth-client"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { userImageProps } from "@/types/tblog"
+import Link from "next/link"
 
 
 
@@ -71,12 +72,10 @@ export function MenuAvatar({avatar}:userImageProps) {
       </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
         <DropdownMenuItem>
-          <UserIcon />
+          <Link href={'/profile'}>
+             <UserIcon />
           Profile
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <CreditCardIcon />
-          Billing
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <SettingsIcon />

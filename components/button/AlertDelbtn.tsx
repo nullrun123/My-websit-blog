@@ -13,12 +13,24 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { useBlogStore } from "@/lib/blog-store"
+import { toast } from "sonner";
+
 export function AlertDelbtn({id}:{id:string}) {
     const deleteBlog  = useBlogStore((state)=>state.deleteBlog);
+    const setError  = useBlogStore((state)=>state.setError);
+    const error = useBlogStore((state)=>state.error);
 
-    
     const deletefunc = async() =>{
-        await deleteBlog(id);
+      await deleteBlog(id);
+      
+    
+      if(error){
+        console.log(error);
+      }else{
+        toast.success("Blog has been delete", { position: "top-center" })
+        setTimeout(()=> window.location.reload(),1000);
+      
+      }
     }
 
   return (
