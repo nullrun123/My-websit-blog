@@ -13,7 +13,6 @@ export interface TypeBlog {
 }
 
 
-
 export interface userImageProps {
   avatar:User;
 }

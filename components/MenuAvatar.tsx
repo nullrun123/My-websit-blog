@@ -72,7 +72,7 @@ export function MenuAvatar({avatar}:userImageProps) {
       </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
         <DropdownMenuItem>
-          <Link href={'/profile'}>
+          <Link href={'/profile'} className="flex gap-2">
              <UserIcon />
           Profile
           </Link>

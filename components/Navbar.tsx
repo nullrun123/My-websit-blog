@@ -20,7 +20,7 @@ function Navbar({ user }:any) {
   
   return (
     <>
-    <div className=' sticky top-0 z-[100] mx-auto flex flex-wrap w-full items-center justify-between bg-background border-b border-gray-700 h-full'>
+    <div className=' sticky top-0 z-[25] mx-auto flex flex-wrap w-full items-center justify-between bg-background border-b border-gray-700 h-full'>
         <div className='h-12 w-10 flex-center ml-5'>
             <img src="/logo.png" alt="logo blog" />
         </div>
