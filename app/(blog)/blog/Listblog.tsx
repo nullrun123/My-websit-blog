@@ -30,11 +30,16 @@ const handleformatDate = (day:string)=>{
   return [...filterBlog].sort((a,b)=>{
     return sortorder == 'asc' ? compareAsc(new Date(a.createAt),new Date(b.createAt)) : compareDesc(new Date(a.createAt),new Date(b.createAt))
   })
+ 
   }, [blogs,query, sortorder])
+
+  useEffect(()=>{
+     window.location.reload();
+  },[])
   
 useEffect(()=>{
     fetchblog()
-    
+  
 },[pathname])
 
   return (

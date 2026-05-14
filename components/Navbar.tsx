@@ -27,7 +27,7 @@ function Navbar({ user }:any) {
             <div className='w-1/3 justify-end items-center hidden md:flex '>
             {
                 user ? (
-                    <MenuLink avatar={user}/>
+                    <MenuLink avatar={user} role={user.role}/>
                    
                 ): (
                     <Navlogin/>
@@ -42,7 +42,7 @@ function Navbar({ user }:any) {
         <div className='flex flex-col basis-full items-center'>
                {
                 user ? (
-                    <MenuLink avatar={user}/>
+                    <MenuLink avatar={user} role={user.role}/>
                    
                 ): (
                     <Navlogin/>

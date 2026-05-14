@@ -17,3 +17,10 @@ export interface userImageProps {
   avatar:User;
 }
 
+
+export interface userImageRoleProps {
+  avatar:User;
+  role:string;
+}
+
+
