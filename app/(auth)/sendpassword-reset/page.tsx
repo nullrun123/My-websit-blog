@@ -43,7 +43,6 @@ export default function page() {
 
   async function onSubmit(data: z.infer<typeof formSchemaEmail>) {
     setIsLoading(true);
-    console.log("🚀 FORM SUBMITTED!", data);
     setError(null);
     setSuccess(null);
     const { email } = data;
